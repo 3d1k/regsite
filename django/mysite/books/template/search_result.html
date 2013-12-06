@@ -1,0 +1,14 @@
+<html>
+	<body>
+		{% if books %}
+			<p>Found {{ books|length }} book{{ books|pluralize }}.</p>
+			<ul>
+			{% for book in books %}
+				<li>{{ book.title }}</li>	
+			{% endfor%}
+			</ul>
+		{% else %}
+			<p>Нет книг с таким заголовком</p>	
+		{% endif %}
+	</body>
+</html>
