@@ -58,12 +58,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mydb',
-        'USER': 'edik',
-        'PASSWORD':'123456',
-        'HOST': '',
-        'PORT':'',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR+'/db/my.db',
+        #'USER': 'edik',
+        #'PASSWORD':'123456',
+        #'HOST': '',
+       # 'PORT':'',
     }
 }
 
@@ -82,10 +82,10 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+# https://docs.djangoproject.com/en/1.6/howto/static-files/ 
 
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
-    '/home/edik/project/django/mysite/books/template',
+    BASE_DIR+'/books/template',
 )
