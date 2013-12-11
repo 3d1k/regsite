@@ -4,16 +4,23 @@
 	</head>
 	<body>
 		<h1>КОНтАКТ!</h1>
-		{% if errors %}
+		{% if form.errors %}
 			{%for error in errors%}
-				<li>{{error}}</li>
+				<li style='color:red'>{{ form.errors|pluralize }}</li>
 			{%endfor%}
 		{%endif%}
-		<form action="/contact/" method="post">
-			<p>Тема: <input type='text' name='subject'></p>
-			<p>Ваш емайл: <input type='text' name='email'></p>
-			<p>Сообщение: <textarea name="message" rows="10" cols ="10"></textarea></p>
+		<form action="" method="post">
+			
+			<table>
+				{{form.as_table}}
+
+			</table>	
+			{% csrf_token %}
 			<p><input type='submit' value="submit"></p>
+		<!-- 	<p>Тема: <input type='text' name='subject' value="{{ post.subject }}"></p>
+			<p>Ваш емайл: <input type='text' name='email' value="{{ post.email }}"></p>
+			<p>Сообщение: <textarea name="message" rows="10" cols ="10">{{post.message}}</textarea></p>
+			<p><input type='submit' value="submit"></p> -->
 		</form>
 	</body>
 </html>

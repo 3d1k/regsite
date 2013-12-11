@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
-#from django.http import HttpResponseRedirect
+from books.forms import ContactForm
+from django.http import HttpResponseRedirect
 from books.models import Books
 from django.core.mail import send_mail
 
@@ -21,20 +22,41 @@ def search(request):
 
 def contact(request):
 	errors=[]
+
 	if request.method =="POST":
 		if not request.POST.get('subject',''):
 			errors.append('Введите тему сообщения')
 		if not request.POST.get('message',''):
 			errors.append('Введите сообщение')
-		if request.POST.get('email','') and '@' not in request.POST['email']:
+		if request.POST.get('email') and '@' not in request.POST['email']:
 			errors.append("Не валидный емайл")
 		if not errors:
 			mes = 'mes'
-			# send_mail(
-			# 	request.POST['subject'],
-			# 	request.POST['message'],
-			# 	request.POST.get('email','noreplay@yourmail.ru'),
-			# 	['siteowner@example.com'],
-			# 	)
-			return render(request,'contact_form.html',{'mes':mes})#HttpResponseRedirect('/contact/thanks/')
-	return render(request,'contact_form.html',{'errors':errors})		
+			send_mail(
+				request.POST['subject'],
+				request.POST['message'],
+				request.POST.get('email','noreplay@yourmail.ru'),
+				['siteowner@example.com'],
+				)
+			return HttpResponseRedirect('/contact/thanks/')
+	return render(request,'contact_form.html',{
+		'errors':errors,
+		'post':{'subject':request.POST.get('subject',''),
+		'email':request.POST.get('email',''),
+		'message':request.POST.get('message','')}})		
+
+def contacts(request):
+	if request.method =="POST":
+		form=ContactForm(request.POST);
+		if form.is_valid():
+			cf = form.cleaned_data
+			send_mail(
+				cf['subject'],
+				cf['message'],
+				cf.get('email','noreplay@yourmail.ru'),
+				['siteowner@example.com'],
+				)
+			return HttpResponseRedirect('/contact/thanks/')
+	else:
+		form = ContactForm()
+	return render(request,'contact_form.html',{'form':form})
